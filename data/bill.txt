@@ -1,0 +1,38 @@
+------------------------------------------
+Amazon Web Services, Inc.
+https://aws.amazon.com
+Invoice Date: 06-Jul-2025
+Invoice Number: AWS-2025-0706-8341
+Billing Period: 01-Jun-2025 to 30-Jun-2025
+Customer ID: 88429374
+Account Name: Ellen Technologies
+------------------------------------------
+
+Service Details:
+-------------------------------
+Amazon EC2 (Compute)
+ - t3.medium x 2 Instances (Asia, 730 hrs)     ₦54,750.00
+
+Amazon S3 (Storage)
+ - 500 GB Storage (Standard)                   ₦7,500.00
+ - Data Transfer Out (20 GB)                   ₦2,400.00
+
+Amazon RDS (Database)
+ - db.t3.small MySQL (Multi-AZ, 730 hrs)       ₦35,100.00
+
+Support Plan: Basic (Free)                     ₦0.00
+
+------------------------------------------
+Subtotal:                                     ₦99,750.00
+VAT (7.5%):                                    ₦7,481.25
+TOTAL:                                       ₦107,231.25
+------------------------------------------
+
+Payment Method: Mastercard **** 9024  
+Transaction ID: AWSINV9876520345NG
+
+Please visit the AWS Billing Console for full breakdown:
+https://console.aws.amazon.com/billing
+
+Thank you for using Amazon Web Services.
+------------------------------------------
