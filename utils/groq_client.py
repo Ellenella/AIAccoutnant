@@ -1,7 +1,7 @@
 
 import os
 import groq
-from typing import Optional, Dict
+from typing import List, Optional, Dict, Tuple
 import json
 import dotenv
 from datetime import datetime
@@ -57,10 +57,15 @@ class GroqClient:
                 extracted_text = self._extract_text_from_pdf(file_bytes)
             elif file_type in ['jpg', 'jpeg', 'png']:
                 extracted_text = self._extract_text_from_image(file_bytes)
+            elif file_type == 'txt':
+                extracted_text = file_bytes.decode('utf-8', errors='ignore')
         
         # Prepare the prompt
-        prompt = """check if there is only or many receipts and if there is morethan one 
-        Analyze the receipt one by one and extract structured data for each of the receipts:
+        prompt = """Very carefully analyze this receipt and extract structured data. Follow these rules:
+    
+FIRST determine if this is actually a receipt (look for totals, items, prices, etc.)
+If it's a receipt, extract these details with HIGH accuracy:
+Analyze the receipt one by one and extract structured data for each of the receipts:
 1. Total amount (with confidence score 0-1)
 2. Merchant name (with confidence)
 3. Transaction date (YYYY-MM-DD format)
@@ -113,7 +118,39 @@ Respond with this exact JSON structure:
         except Exception as e:
             print(f"Processing error: {e}")
             return self._error_response(extracted_text)
-    
+    # Add this method to the GroqClient class
+    def process_bulk_receipts(self, files: List[Tuple[bytes, str]] = None, texts: List[str] = None) -> List[Dict]:
+        """
+        Process multiple receipts in bulk
+        Args:
+            files: List of tuples (file_bytes, file_type)
+            texts: List of raw receipt texts
+        Returns:
+            List of processed receipt data
+        """
+        results = []
+        
+        # Process files
+        if files:
+            for file_bytes, file_type in files:
+                try:   
+                    result = self.process_receipt(file_bytes=file_bytes, file_type=file_type)
+                    results.append(result)
+                except Exception as e:
+                    print(f"Failed to process file: {e}")
+                    results.append(self._error_response("Processing failed"))
+        
+        # Process texts
+        if texts:
+            for text in texts:
+                try:
+                    result = self.process_receipt(text=text)
+                    results.append(result)
+                except Exception as e:
+                    print(f"Failed to process text: {e}")
+                    results.append(self._error_response("Processing failed"))
+        
+        return results
     def _validate_response(self, data: Dict, original_desc: str) -> Dict:
         """Ensure response meets expected format"""
         validated = {

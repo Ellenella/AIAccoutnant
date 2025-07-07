@@ -72,7 +72,41 @@ def init_db():
             FROM transactions
             ORDER BY date DESC
             """)
+            conn.cursor().execute("""
+            CREATE TABLE IF NOT EXISTS income (
+                id STRING PRIMARY KEY,
+                date TIMESTAMP_NTZ,
+                source STRING,
+                amount FLOAT,
+                category STRING,
+                payment_method STRING,
+                description STRING,
+                is_taxable BOOLEAN DEFAULT TRUE,
+                recurrence STRING,  -- 'one-time', 'weekly', 'monthly', 'annual',
+                tags ARRAY
+            )
+            """)
+            
+            # Create view for easier querying
+            conn.cursor().execute("""
+            CREATE OR REPLACE VIEW income_summary AS
+                SELECT 
+                    id,
+                    date,
+                    source,
+                    amount,
+                    category,
+                    payment_method,
+                    description,
+                    is_taxable,
+                    recurrence,
+                    tags
+                            
+                FROM income
+                ORDER BY date DESC
+            """)
             print("Database initialized successfully")
+            
     except Exception as e:
         print(f"Database initialization error: {e}")
         raise
@@ -120,7 +154,84 @@ def log_transaction(transaction_data: dict) -> str:
     except Exception as e:
         print(f"Transaction logging failed: {e}")
         raise
+# Add these methods to your Snowflake connector
+
+def bulk_log_transactions(transactions: List[Dict]) -> List[str]:
+    """Bulk log transactions with automatic ID generation"""
+    if not transactions:
+        return []
     
+    # Generate IDs for all transactions
+    for t in transactions:
+        if 'id' not in t:
+            t['id'] = str(uuid.uuid4())
+    
+    try:
+        with get_conn() as conn:
+            cursor = conn.cursor()
+            
+            # Prepare the bulk insert query
+            query = """
+            INSERT INTO transactions (
+                id, date, merchant, merchant_confidence,
+                description, amount, amount_confidence,
+                category, category_confidence, date_confidence,
+                is_reconciled
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            
+            # Prepare all values
+            values = []
+            for t in transactions:
+                values.append((
+                    t.get("id"),
+                    t.get("date", datetime.utcnow()),
+                    t.get("merchant", ""),
+                    float(t.get("merchant_confidence", 1.0)),
+                    t.get("description", ""),
+                    float(t.get("amount", 0.0)),
+                    float(t.get("amount_confidence", 1.0)),
+                    t.get("category", "Other"),
+                    float(t.get("category_confidence", 1.0)),
+                    float(t.get("date_confidence", 1.0)),
+                    bool(t.get("is_reconciled", False))
+                ))
+            
+            # Execute the bulk insert
+            cursor.executemany(query, values)
+            conn.commit()
+            
+            return [t['id'] for t in transactions]
+    except Exception as e:
+        print(f"Bulk transaction logging failed: {e}")
+        raise
+
+def bulk_update_categories(self, updates: List[Tuple[str, str, float]]) -> int:
+    """Bulk update transaction categories"""
+    if not updates:
+        return 0
+    
+    try:
+        with get_conn() as conn:
+            cursor = conn.cursor()
+            
+            # Prepare the bulk update query
+            query = """
+            UPDATE transactions
+            SET category = %s,
+                category_confidence = %s,
+                last_updated = CURRENT_TIMESTAMP()
+            WHERE id = %s
+            """
+            
+            # Execute the bulk update
+            cursor.executemany(query, updates)
+            conn.commit()
+            
+            return cursor.rowcount
+    except Exception as e:
+        print(f"Bulk update failed: {e}")
+        return 0
 def get_transactions(limit: int = 100) -> List[Tuple]:
     """Get recent transactions as tuples"""
     try:

@@ -1,0 +1,41 @@
+--------------------------------------------
+DigitalOcean, LLC
+https://www.digitalocean.com  
+Invoice Date: 06-Jul-2025  
+Invoice #: DO-INV-7054393  
+Billing Period: 01-Jun-2025 to 30-Jun-2025  
+Customer: Ellen Technologies  
+Account ID: 48920391  
+--------------------------------------------
+
+Itemized Charges:
+--------------------------------------------
+Droplets (Compute Instances)
+ - 2x Basic Droplet (2GB / 1 vCPU / 60GB SSD)  
+   Region: Frankfurt (FRA1)                   ₦8,000.00
+
+Managed Database
+ - PostgreSQL (db-s-2vcpu-4gb) FRA1           ₦14,500.00
+
+Block Storage
+ - 100 GB Volume (FRA1)                       ₦1,200.00
+
+Bandwidth
+ - Outbound: 40 GB                            ₦3,600.00
+
+App Platform
+ - Static App (Starter Tier)                 ₦2,000.00
+
+--------------------------------------------
+Subtotal:                                    ₦29,300.00  
+VAT (7.5%):                                   ₦2,197.50  
+TOTAL AMOUNT:                                ₦31,497.50  
+--------------------------------------------
+
+Paid via: Visa **** 3411  
+Transaction ID: DO-TXN-00493201  
+Payment Date: 06-Jul-2025
+
+Need help? Contact support@digitalocean.com
+--------------------------------------------
+Thank you for choosing DigitalOcean!
