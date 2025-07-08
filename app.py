@@ -1,4 +1,5 @@
 import streamlit as st
+from dashboard.detail_financialinvestment import detail_investmentplan
 from dashboard.financial_report import generate_financial_dashboard
 from dashboard.savingandinvest import savings_and_investing_tab
 from dashboard.taxandcomp import tax_optimization_tab
@@ -38,7 +39,7 @@ if 'form_submitted' not in st.session_state:
 st.title("📄 Smart Receipt Processor")
 
 # Tab interface
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Upload Receipt", "Income Management","View Income and Expense", "Financial Reports", "Tax & Compliance", "Savings & Investing"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["Upload Receipt", "Income Management","View Income and Expense", "Financial Reports", "Tax & Compliance", "Savings & Investing", "Investment Planning"])
 
 with tab1:
     # Create two columns for layout
@@ -491,3 +492,5 @@ with tab5:
 
 with tab6:
     savings_and_investing_tab()
+with tab7:
+    detail_investmentplan()
