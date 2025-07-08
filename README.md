@@ -62,7 +62,6 @@ graph TD
     D --> H[Financial Analysis]
     E --> I[Saving and Investments]
     F --> J[Tax Optimization]
-    B --> K{Market Analysis for Investment}
 ```
 # Clone the repository
 git clone https://github.com/yourusername/financebro.ai.git
