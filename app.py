@@ -36,7 +36,7 @@ if not initialize_database():
 
 if 'form_submitted' not in st.session_state:
     st.session_state.form_submitted = False
-st.title("📄 Smart Receipt Processor")
+st.title("📄 FinanceBro.ai")
 
 # Tab interface
 tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["Upload Receipt", "Income Management","View Income and Expense", "Financial Reports", "Tax & Compliance", "Savings & Investing", "Investment Planning"])
@@ -50,8 +50,8 @@ with tab1:
         
         # Unified file uploader for single file
         uploaded_file = st.file_uploader(
-            "Upload Receipt (PDF, Image, or Text)",
-            type=["pdf", "jpg", "jpeg", "png", "txt"],
+            "Upload Receipt (PDF, csv or Text)",
+            type=["pdf","csv", "txt"],
             help="Upload a receipt in any format",
             key="single_upload"
         )

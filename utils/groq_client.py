@@ -1,4 +1,5 @@
 
+import csv
 import os
 import groq
 from typing import List, Optional, Dict, Tuple
@@ -10,6 +11,7 @@ import pytesseract
 from PIL import Image
 import io
 import pdf2image
+import PyPDF2
 import tempfile
 
 # Load environment variables
@@ -23,17 +25,16 @@ class GroqClient:
         self.client = groq.Client(api_key=api_key)
         pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'  # Update path as needed
 
+    
     def _extract_text_from_pdf(self, pdf_bytes: bytes) -> str:
-        """Extract text from PDF using OCR"""
+        """Extract text directly from PDF without using OCR"""
         try:
-            images = pdf2image.convert_from_bytes(pdf_bytes)
-            text = ""
-            for i, image in enumerate(images):
-                text += f"Page {i+1}:\n"
-                text += pytesseract.image_to_string(image) + "\n\n"
-            return text.strip()
+            with io.BytesIO(pdf_bytes) as pdf_file:
+                reader = PyPDF2.PdfReader(pdf_file)
+                text = "\n".join([page.extract_text() for page in reader.pages])
+                return text.strip() if text else ""
         except Exception as e:
-            print(f"PDF extraction error: {e}")
+            print(f"PDF text extraction error: {e}")
             return ""
 
     def _extract_text_from_image(self, image_bytes: bytes) -> str:
@@ -44,6 +45,35 @@ class GroqClient:
         except Exception as e:
             print(f"Image OCR error: {e}")
             return ""
+    def _process_csv_file(self, csv_bytes: bytes) -> List[Dict]:
+        """Process a CSV file containing receipt data"""
+        try:
+            # Decode bytes to string
+            csv_string = csv_bytes.decode('utf-8')
+            csv_reader = csv.DictReader(io.StringIO(csv_string))
+            
+            results = []
+            for row in csv_reader:
+                # Check for different possible CSV formats
+                if 'text' in row:
+                    receipt_text = row['text']
+                elif 'content' in row:
+                    receipt_text = row['content']
+                elif 'receipt_text' in row:
+                    receipt_text = row['receipt_text']
+                else:
+                    # Use the first column if standard fields not found
+                    receipt_text = list(row.values())[0]
+                
+                if receipt_text:
+                    result = self.process_receipt(text=receipt_text)
+                    results.append(result)
+            
+            return results
+        
+        except Exception as e:
+            print(f"CSV processing error: {e}")
+            return []
 
     def process_receipt(self, file_bytes: Optional[bytes] = None, text: str = "", file_type: str = None) -> Dict:
         """
@@ -55,6 +85,8 @@ class GroqClient:
         if file_bytes and file_type:
             if file_type == 'pdf':
                 extracted_text = self._extract_text_from_pdf(file_bytes)
+                if not extracted_text:
+                    return self._error_response("Failed to extract text from PDF")
             elif file_type in ['jpg', 'jpeg', 'png']:
                 extracted_text = self._extract_text_from_image(file_bytes)
             elif file_type == 'txt':
@@ -119,7 +151,7 @@ Respond with this exact JSON structure:
             print(f"Processing error: {e}")
             return self._error_response(extracted_text)
     # Add this method to the GroqClient class
-    def process_bulk_receipts(self, files: List[Tuple[bytes, str]] = None, texts: List[str] = None) -> List[Dict]:
+    def process_bulk_receipts(self, files: List[Tuple[bytes, str]] = None, texts: List[str] = None,  csv_files: Optional[List[bytes]] = None,pdf_files: Optional[List[bytes]] = None) -> List[Dict]:
         """
         Process multiple receipts in bulk
         Args:
@@ -144,8 +176,16 @@ Respond with this exact JSON structure:
         if texts:
             for text in texts:
                 try:
-                    result = self.process_receipt(text=text)
-                    results.append(result)
+                    if file_type == 'csv':
+                        # Handle CSV files through the special processing
+                        csv_results = self._process_csv_file(file_bytes)
+                        results.extend(csv_results)
+                    if file_type == 'pdf':
+                        pdf_results = self.process_receipt(file_bytes=pdf_files, file_type='pdf')
+                        results.append(pdf_results)
+                    else:
+                        result = self.process_receipt(text=text)
+                        results.append(result)
                 except Exception as e:
                     print(f"Failed to process text: {e}")
                     results.append(self._error_response("Processing failed"))
