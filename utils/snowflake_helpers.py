@@ -29,6 +29,7 @@ def get_recent_transactions(limit: int = 100) -> pd.DataFrame:
     
     return df
 
+
 def log_receipt_transaction(receipt_data: Dict) -> str:
     """Log a transaction from receipt analysis"""
     try:
@@ -162,6 +163,21 @@ class TransactionManager:
             'total': df['weighted_amount'].sum(),
             'timeframe': timeframe
         }
+    @staticmethod
+    def get_monthly_expense_average(months=12) -> float:
+        """Get average monthly expenses over specified period"""
+        expenses = get_transactions_as_dataframe()
+        if expenses.empty:
+            return 0.0
+        
+        # Filter for last N months
+        cutoff = datetime.now() - pd.DateOffset(months=months)
+        recent_expenses = expenses[expenses['date'] >= cutoff]
+        
+        if recent_expenses.empty:
+            return 0.0
+        
+        return recent_expenses.groupby(recent_expenses['date'].dt.to_period('M'))['amount'].sum().mean()
     # In your TransactionManager class (snowflake_helpers.py)
     @staticmethod
     def get_combined_financial_report(time_period: str = 'month', 

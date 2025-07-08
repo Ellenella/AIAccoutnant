@@ -1,15 +1,16 @@
-import json
 import streamlit as st
 from dashboard.financial_report import generate_financial_dashboard
+from dashboard.savingandinvest import savings_and_investing_tab
+from dashboard.taxandcomp import tax_optimization_tab
 from utils.income_manager import IncomeManager
 from utils.snowflake_conn import init_db
 from utils.snowflake_helpers import TransactionManager
 from utils.groq_client import GroqClient
 import os
-import tempfile
 from datetime import datetime
 import pandas as pd
 import numpy as np
+
 
 
 st.set_page_config(layout="wide", page_title="AI Accountant", page_icon="🧾")
@@ -30,12 +31,14 @@ def initialize_database():
 if not initialize_database():
     st.stop()
     
+
+
 if 'form_submitted' not in st.session_state:
     st.session_state.form_submitted = False
 st.title("📄 Smart Receipt Processor")
 
 # Tab interface
-tab1, tab2, tab3, tab4 = st.tabs(["Upload Receipt", "Income Management","View Income and Expense", "Financial Reports"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Upload Receipt", "Income Management","View Income and Expense", "Financial Reports", "Tax & Compliance", "Savings & Investing"])
 
 with tab1:
     # Create two columns for layout
@@ -483,3 +486,8 @@ with tab4:
             index=1
         )
     generate_financial_dashboard(time_period)
+with tab5:
+    tax_optimization_tab()
+
+with tab6:
+    savings_and_investing_tab()

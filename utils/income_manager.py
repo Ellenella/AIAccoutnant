@@ -80,6 +80,25 @@ class IncomeManager:
         """Get income records as DataFrame"""
         income = IncomeManager.get_income(limit)
         return pd.DataFrame(income) if income else pd.DataFrame()
+    @staticmethod
+    def get_monthly_income_average(months=12) -> float:
+        """Get average monthly income over specified period"""
+        income = IncomeManager.get_income_as_dataframe()
+        if income.empty:
+            return 0.0
+        
+        # Ensure we have DATE and AMOUNT columns (adjust as needed for your schema)
+        if 'DATE' not in income.columns or 'AMOUNT' not in income.columns:
+            return 0.0
+        
+        # Filter for last N months
+        cutoff = datetime.now() - pd.DateOffset(months=months)
+        recent_income = income[income['DATE'] >= cutoff]
+        
+        if recent_income.empty:
+            return 0.0
+        
+        return recent_income.groupby(recent_income['DATE'].dt.to_period('M'))['AMOUNT'].sum().mean()
 
     @staticmethod
     def get_income_report(timeframe: str = 'month') -> Dict:
