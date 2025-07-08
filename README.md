@@ -1,6 +1,5 @@
 # FinanceBro.ai - AI-Powered Financial Assistant
 
-![FinanceBro.ai Dashboard](https://via.placeholder.com/1200x600.png?text=FinanceBro.ai+Dashboard+Preview)
 
 ## 📌 Overview
 
