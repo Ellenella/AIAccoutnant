@@ -57,7 +57,7 @@ graph TD
     B --> C{Upload datasets}
     B --> D{Groq API and Llama}
     B --> E[Groq and Llama Models and Fetch.ai (ASI:one)]
-    B --> F[Fetch.ai(ASI:one)]
+    B --> F[Fetch.ai (ASI:one)]
     C --> G[Receipt Processing]
     D --> H[Financial Analysis]
     E --> I[Investments]
