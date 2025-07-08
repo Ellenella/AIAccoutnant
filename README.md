@@ -62,7 +62,12 @@ graph TD
     D --> H[Financial Analysis]
     E --> I[Investments]
     F --> J[Tax Optimization]
-
+sequenceDiagram
+    User->>+Backend: Request Analysis
+    Backend->>+Llama: Portfolio Data
+    Llama-->>-Backend: Recommendations
+    Backend-->>-User: Display Results
+```
 # Clone the repository
 git clone https://github.com/yourusername/financebro.ai.git
 
