@@ -47,8 +47,8 @@ Built with cutting-edge technologies including Natively.ai, Groq, and Llama, our
 |------------|---------|
 | Natively.ai | prompt to code for some files such as dashboard and generate other UI |
 | Groq | Document processing and data extraction and High-speed financial analysis |
-| Llama 3 and Groq and fetch.ai | Investment recommendations |
-| Fetch.ai | Tax optimization agents |
+| Llama 3 and Groq and Fetch.ai(ASI:one) | Investment recommendations |
+| Fetch.ai (ASI:one)| Tax optimization agents |
 
 ### Application Stack
 ```mermaid
