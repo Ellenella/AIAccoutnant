@@ -5,6 +5,7 @@ env/
 .vscode/
 # Ignore environment variable files
 .env
+video/
 
 # Bytecode and cache files
 __pycache__/
