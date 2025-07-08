@@ -18,7 +18,7 @@ class TaxComplianceAssistant:
         HEADERS = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': f'Bearer {os.getenv("ASI_API_KEY")}'
+            'Authorization': f'Bearer {st.secrets["ASI_API_KEY"]}'
         }
         
         URL = "https://api.asi1.ai/v1/chat/completions"

@@ -16,7 +16,7 @@ ASI_MODEL = "asi1-mini"
 # --- API Clients ---
 class GroqClient:
     def __init__(self):
-        self.client = groq.Client(api_key=os.getenv("GROQ_API_KEY"))
+        self.client = groq.Client(api_key=st.secrets["GROQ_API_KEY"])
     
     def generate(self, prompt: str, temperature: float = 0.3) -> str:
         response = self.client.chat.completions.create(
@@ -33,7 +33,7 @@ class ASIClient:
         headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': f'Bearer {os.getenv("ASI_API_KEY")}'
+            'Authorization': f'Bearer {st.secrets["ASI_API_KEY"]}'
         }
         
         payload = json.dumps({
