@@ -61,25 +61,25 @@ graph TD
     C --> G[Receipt Processing]
     D --> H[Financial Analysis]
     E --> I[Saving and Investments]
-    F --> J[Tax Optimization]
+    F --> J[Tax Optimization] 
 ```
-# Clone the repository
+### Clone the repository
 git clone https://github.com/yourusername/financebro.ai.git
 
-# Navigate to project directory
+### Navigate to project directory
 cd financebro.ai
 
-# Create virtual environment
+### Create virtual environment
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
 # .\venv\Scripts\activate  # Windows
 
-# Install dependencies
+#### Install dependencies
 pip install -r requirements.txt
 
-# Configure environment
+#### Configure environment
 cp .env.example .env
-# Add your API keys to .env
+#### Add your API keys to .env
 
-# Run the application
+#### Run the application
 streamlit run app.py
