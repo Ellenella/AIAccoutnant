@@ -56,8 +56,8 @@ graph TD
     A[Streamlit UI] --> B[Python Backend]
     B --> C{Upload datasets}
     B --> D{Groq API and Llama}
-    B --> E[Groq and Llama Models and Fetch.ai (ASI:one)]
-    B --> F[Fetch.ai (ASI:one)]
+    B --> E[Groq, Llama Models,Fetch.ai]
+    B --> F[Fetch.ai]
     C --> G[Receipt Processing]
     D --> H[Financial Analysis]
     E --> I[Investments]
