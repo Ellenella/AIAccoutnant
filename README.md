@@ -52,16 +52,16 @@ Built with cutting-edge technologies including Natively.ai, Groq, and Llama, our
 
 ### Application Stack
 ```mermaid
-flowchart TD
-    A[Streamlit UI] --> B[Python Backend]
-    B --> C{Upload datasets}
-    B --> D{Groq API and Llama}
-    B --> E[Groq Llama Models and Fetch.ai (ASI:one)]
-    B --> F[Fetch.ai(ASI:one)]
-    C --> G[Receipt Processing]
-    D --> H[Financial Analysis]
-    E --> I[Saving and Investments]
-    F --> J[Tax Optimization]
+graph TD
+A[Streamlit UI] --> B[Python Backend]
+B --> C{Upload datasets}
+B --> D{Groq API and Llama}
+B --> E[Groq Llama Models and Fetch.ai (ASI:one)]
+B --> F[Fetch.ai(ASI:one)]
+C --> G[Receipt Processing]
+D --> H[Financial Analysis]
+E --> I[Saving and Investments]
+F --> J[Tax Optimization]
 ```
 ### Clone the repository
 git clone https://github.com/yourusername/financebro.ai.git
