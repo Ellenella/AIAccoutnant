@@ -54,7 +54,7 @@ Built with cutting-edge technologies including Natively.ai, Groq, and Llama, our
 ```mermaid
 graph TD
     A[Streamlit UI] --> B[Python Backend]
-    B --> C{Streamlit}
+    B --> C{Upload datasets}
     B --> D{Groq API}
     B --> E[Llama Models]
     B --> F[Fetch.ai]
@@ -62,11 +62,6 @@ graph TD
     D --> H[Financial Analysis]
     E --> I[Investments]
     F --> J[Tax Optimization]
-sequenceDiagram
-    User->>+Backend: Request Analysis
-    Backend->>+Llama: Portfolio Data
-    Llama-->>-Backend: Recommendations
-    Backend-->>-User: Display Results
 ```
 # Clone the repository
 git clone https://github.com/yourusername/financebro.ai.git
