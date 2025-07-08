@@ -55,13 +55,14 @@ Built with cutting-edge technologies including Natively.ai, Groq, and Llama, our
 graph TD
     A[Streamlit UI] --> B[Python Backend]
     B --> C{Upload datasets}
-    B --> D{Groq API}
-    B --> E[Llama Models]
-    B --> F[Fetch.ai]
+    B --> D{Groq API and Llama}
+    B --> E[Groq Llama Models and Fetch.ai (ASI:one)]
+    B --> F[Fetch.ai(ASI:one)]
     C --> G[Receipt Processing]
     D --> H[Financial Analysis]
-    E --> I[Investments]
+    E --> I[Saving and Investments]
     F --> J[Tax Optimization]
+    I ---> K[Market Analysis for Investment]
 ```
 # Clone the repository
 git clone https://github.com/yourusername/financebro.ai.git
