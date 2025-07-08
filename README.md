@@ -60,7 +60,7 @@ graph TD
     B --> F[Fetch.ai]
     C --> G[Receipt Processing]
     D --> H[Financial Analysis]
-    E --> I[Investments]
+    E --> I[Investments Advise]
     F --> J[Tax Optimization]
 ```
 ### Clone the repository
