@@ -17,7 +17,7 @@ ASI_MODEL = "asi1-mini"
 class GroqClient:
     def __init__(self):
         self.client = groq.Client(api_key=st.secrets["GROQ_API_KEY"])
-    
+
     def generate(self, prompt: str, temperature: float = 0.3) -> str:
         response = self.client.chat.completions.create(
             model=GROQ_MODEL,
