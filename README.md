@@ -1,4 +1,4 @@
-# FinanceBro.ai - AI-Powered Financial Assistant
+# AIAccountant - AI-Powered Financial Assistant
 
 
 ## 📌 Overview
